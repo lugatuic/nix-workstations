@@ -11,11 +11,9 @@
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub = {
-    enable = true;
-    efiSupport = true;
-    device = "/dev/disk/by-label/esp";
-  };
+  boot.loader.systemd-boot.enable = true;
+  
+
   users.motd = ''
     Hello random user, Welcome to LUG+ACM at UIC!\n
     Enjoy using this super cool Workstation powered by NixOS!\n\n
