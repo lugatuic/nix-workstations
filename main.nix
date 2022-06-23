@@ -10,6 +10,12 @@
     extraOptions = "experimental-features = nix-command flakes";
   };
 
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    device = "/dev/disk/by-label/esp";
+  };
   users.motd = ''
     Hello random user, Welcome to LUG+ACM at UIC!\n
     Enjoy using this super cool Workstation powered by NixOS!\n\n
