@@ -81,6 +81,17 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
+  users.ldap = {
+    enable = true;
+    base = "dc=acm;dc=cs";
+    server = "ldap://ad.acm.cs/";
+    useTLS = true;
+    extraConfig = ''
+                ldap_version 3
+                pam_password md5
+    '';
+  };
+  security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
