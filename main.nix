@@ -85,7 +85,7 @@
     enable = true;
     base = "dc=acm;dc=cs";
     server = "ldap://ad.acm.cs/";
-    useTLS = true;
+    useTLS = false;
     extraConfig = ''
                 ldap_version 3
                 pam_password md5
