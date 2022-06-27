@@ -83,7 +83,7 @@
 
   users.ldap = {
     enable = true;
-    base = "dc=acm;dc=cs";
+    base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs/";
     useTLS = false;
     extraConfig = ''
