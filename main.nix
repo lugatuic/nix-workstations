@@ -118,9 +118,7 @@
   services.openssh.enable = true;
   services.openssh.permitRootLogin = "yes";
   
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
-  services.avahi.publish.enable = true;
+  services.avahi.enable = false;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
