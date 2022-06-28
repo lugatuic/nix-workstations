@@ -130,7 +130,7 @@
   };
 
   networking.hosts = {
-    "127.0.0.1" = ["localhost"];
+    "127.0.0.1" = ["evaa.acm.cs" "evaa"];
   };
 
   # Rebuild Samba with LDAP, MDNS and Domain Controller support
