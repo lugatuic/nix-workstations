@@ -157,11 +157,11 @@
   };
   services.samba-wsdd = {
     enable = true;
-    domain = "ad.acm.cs";
+    domain = "acm.cs";
     discovery = true;
   };
   krb5.libdefaults = {
-    default_realm = "ad.acm.cs";
+    default_realm = "acm.cs";
     dns_lookup_realm = false;
     dns_lookup_kdc = true;
   };
