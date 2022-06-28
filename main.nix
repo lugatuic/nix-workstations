@@ -89,7 +89,7 @@
       extraConfig = ''
                   uri ldap://ad.acm.cs
                   binddn "CN=EVA,OU=ACMWorkstations,DC=acm,DC=cs"
-      ''
+      '';
     };
   };
   security.pam.services.sshd.makeHomeDir = true;
