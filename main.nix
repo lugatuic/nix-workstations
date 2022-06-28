@@ -87,6 +87,7 @@
     server = "ldap://ad.acm.cs";
     loginPam = true;
     bind.distinguishedName = "nslcduser@acm.cs";
+    bind.passwordFile = "/root/bind.pass";
   };
 
   security.pam.services.sshd.makeHomeDir = true;
