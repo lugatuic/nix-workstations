@@ -148,7 +148,7 @@
                [global]
                       security = ADS
                       workgroup = ACM
-                      realm = ad.acm.cs
+                      realm = acm.cs
                       idmap config * : backend = autorid
                       idmap config * : range = 10000-9999999
                       username map = /etc/smb.map
