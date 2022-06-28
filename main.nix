@@ -139,6 +139,7 @@
   } ) ];
 
   services.samba = {
+    enable = true;
     configText = ''
                [global]
                       security = ADS
