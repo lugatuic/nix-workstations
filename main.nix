@@ -145,7 +145,7 @@
   };
   services.samba-wsdd = {
     enable = true;
-    domain = "acm.cs";
+    domain = "ad.acm.cs";
     discovery = true;
   };
   krb5.libdefaults = {
