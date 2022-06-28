@@ -139,9 +139,16 @@
   } ) ];
 
   services.samba = {
-    enable = true;
-    enableWinbindd = true;
-    openFirewall = true;
+    configText = ''
+               [global]
+                      security = ADS
+                      workgroup = ACM
+                      realm = ad.acm.cs
+                      idmap config * : backend = autorid
+                      idmap config * : range = 10000-9999999
+                      username map = /etc/smb.map
+
+    '';
   };
   services.samba-wsdd = {
     enable = true;
