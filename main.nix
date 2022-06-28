@@ -144,9 +144,9 @@
 
   services.samba = {
     enable = true;
-    configText = ''
-               [global]
-                      security = ADS
+    enableWinbindd = true;
+    securityType = "ADS";
+    extraConfig = ''
                       workgroup = ACM
                       realm = acm.cs
                       idmap config * : backend = autorid
