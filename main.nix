@@ -142,6 +142,10 @@
     };
   } ) ];
 
+  services.timesyncd = {
+    enable = true;
+    servers = ["dc1.acm.cs" "dc2.acm.cs"];
+  };
   services.samba = {
     enable = true;
     enableWinbindd = true;
