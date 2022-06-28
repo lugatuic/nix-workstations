@@ -123,6 +123,25 @@
   services.openssh.permitRootLogin = "yes";
   
   services.avahi.enable = false;
+  # Disable resolveconf, we're using Samba internal DNS backend
+  systemd.services.resolvconf.enable = false;
+  environment.etc = {
+    resolvconf = {
+      text = ''
+        search ad.acm.cs
+        nameserver 172.29.0.16
+      '';
+    };
+  };
+
+  # Rebuild Samba with LDAP, MDNS and Domain Controller support
+  nixpkgs.overlays = [ (self: super: {
+    samba = super.samba.override {
+      enableLDAP = true;
+      enableMDNS = true;
+      enableDomainController = true;
+    };
+  } ) ];
 
   services.samba = {
 
