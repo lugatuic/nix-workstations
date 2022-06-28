@@ -14,7 +14,7 @@
         };
       };
     in {
-      nixosConfigurations."EVA" = nixpkgs.lib.nixosSystem {
+      nixosConfigurations."EVAA" = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [ ./main.nix ];
       };
