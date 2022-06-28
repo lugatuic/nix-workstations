@@ -86,7 +86,7 @@
     base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs";
     loginPam = true;
-    distinguishedName = "nslcduser@acm.cs";
+    bind.distinguishedName = "nslcduser@acm.cs";
   };
 
   security.pam.services.sshd.makeHomeDir = true;
