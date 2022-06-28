@@ -81,14 +81,14 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  users.ldap = {
-    enable = true;
-    base = "dc=acm,dc=cs";
-    server = "ldap://ad.acm.cs";
-    loginPam = true;
-    bind.distinguishedName = "nslcduser@acm.cs";
-    bind.passwordFile = "/root/bind.pass";
-  };
+  # users.ldap = {
+  #   enable = true;
+  #   base = "dc=acm,dc=cs";
+  #   server = "ldap://ad.acm.cs";
+  #   loginPam = true;
+  #   bind.distinguishedName = "nslcduser@acm.cs";
+  #   bind.passwordFile = "/root/bind.pass";
+  # };
 
   security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
@@ -138,22 +138,21 @@
     };
   } ) ];
 
-  # services.samba = {
-
-  #   enable = true;
-  #   enableWinbindd = true;
-  #   openFirewall = true;
-  # };
-  # services.samba-wsdd = {
-  #   enable = true;
-  #   domain = "acm.cs";
-  #   discovery = true;
-  # };
-  # krb5.libdefaults = {
-  #   default_realm = "ad.acm.cs";
-  #   dns_lookup_realm = false;
-  #   dns_lookup_kdc = true;
-  # };
+  services.samba = {
+    enable = true;
+    enableWinbindd = true;
+    openFirewall = true;
+  };
+  services.samba-wsdd = {
+    enable = true;
+    domain = "acm.cs";
+    discovery = true;
+  };
+  krb5.libdefaults = {
+    default_realm = "ad.acm.cs";
+    dns_lookup_realm = false;
+    dns_lookup_kdc = true;
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
