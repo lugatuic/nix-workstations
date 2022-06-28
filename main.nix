@@ -89,7 +89,8 @@
       enable = true;
       extraConfig = ''
                   uri ldap://ad.acm.cs
-                  binddn "CN=EVA,OU=ACMWorkstations,DC=acm,DC=cs"
+                  binddn "nslcduser"
+                  bindpw "secretLOL"
       '';
     };
   };
