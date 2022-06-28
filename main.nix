@@ -89,7 +89,7 @@
       enable = true;
       extraConfig = ''
                   uri ldap://ad.acm.cs
-                  binddn "nslcduser"
+                  binddn "nslcduser@acm.cs"
                   bindpw "secretLOL"
       '';
     };
