@@ -84,6 +84,7 @@
   users.ldap = {
     enable = true;
     base = "dc=acm,dc=cs";
+    server = "ldap://ad.acm.cs";
     daemon = {
       enable = true;
       extraConfig = ''
