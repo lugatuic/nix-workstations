@@ -84,8 +84,13 @@
   users.ldap = {
     enable = true;
     base = "dc=acm,dc=cs";
-    server = "ldap://ad.acm.cs/";
-    useTLS = true;
+    daemon = {
+      enable = true;
+      extraConfig = ''
+                  uri ldap://ad.acm.cs
+                  binddn "CN=EVA,OU=ACMWorkstations,DC=acm,DC=cs"
+      ''
+    };
   };
   security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
