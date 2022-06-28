@@ -129,6 +129,10 @@
     };
   };
 
+  networking.hosts = {
+    "127.0.0.1" = ["localhost"];
+  };
+
   # Rebuild Samba with LDAP, MDNS and Domain Controller support
   nixpkgs.overlays = [ (self: super: {
     samba = super.samba.override {
