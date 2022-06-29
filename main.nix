@@ -85,9 +85,13 @@
     enable = true;
     base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs";
+    bind.distinguishedName = "nslcduser@acm.cs";
+    bind.passwordFile = "/root/binddn.passwd";
     loginPam = true;
     daemon = {
       enable = true;
+      rootpwmoddn = "CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs";
+      rootpwmodpwFile = "/root/rootpw.passwd";
       extraConfig = ''
        uri ldap://ad.acm.cs
        ldap_version 3
