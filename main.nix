@@ -92,9 +92,9 @@
     daemon = {
       enable = true;
       rootpwmoddn = "CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs";
-      rootpwmodpwFile = "/root/rootpw.passwd"
       extraConfig = ''
         bindpw SECRET_LOL
+        rootpw 
         pagesize 1000
         referrals off
         filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
@@ -106,7 +106,7 @@
         map    shadow shadowLastChange pwdLastSet
         filter group  (objectClass=group)
         map    group  uniqueMember     member
-      ''
+      '';
     };
     
   };
