@@ -91,6 +91,8 @@
     bind.passwordFile = "/root/binddn.passwd";
     daemon = {
       enable = true;
+      timeLimit = 300;
+      extraConfig = "bindpw SECRET_LOL";
     };
     
   };
