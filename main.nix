@@ -97,6 +97,9 @@
     # see https://stackoverflow.com/a/47041843 for why this is required
     text = lib.mkDefault (
       lib.mkBefore ''
+            auth sufficient ${pam_ldap}/security/pam_ldap.so
+            account sufficient pam_permit.so
+            
             auth required pam_listfile.so \
             item=group sense=allow onerr=fail file=/etc/allowed_groups
         ''
