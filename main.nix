@@ -88,36 +88,10 @@
     bind.distinguishedName = "nslcduser@acm.cs";
     bind.passwordFile = "/root/binddn.passwd";
     loginPam = true;
-    daemon = {
-      enable = true;
-      rootpwmoddn = "CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs";
-      rootpwmodpwFile = "/root/rootpw.passwd";
-      extraConfig = ''
-       uri ldap://ad.acm.cs
-       ldap_version 3
-       base dc=acm,dc=cs
-       binddn nslcduser@acm.cs
-       bindpw SECRET_LOL
-       rootpwmoddn CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs
-       rootpwmodpw SECRET_LOL
-       tls_reqcert never
-
-       base        group    ou=ACMGroups,dc=acm,dc=cs
-       base        passwd   ou=ACMUsers,dc=acm,dc=cs
-       base        shadow   ou=ACMUsers,dc=acm,dc=cs
-       pagesize 1000
-       referrals off
-       filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-       map    passwd uid              sAMAccountName
-       map    passwd homeDirectory    unixHomeDirectory
-       map    passwd gecos            displayName
-       filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-       map    shadow uid              sAMAccountName
-       map    shadow shadowLastChange pwdLastSet
-       filter group  (objectClass=group)
-       map    group  uniqueMember     member
-      '';
-    };
+    nsswitch = true;
+    bind.distinguishedName = "nslcduser@acm.cs";
+    bind.passwordFile = "/root/binddn.passwd";
+    
   };
 
   security.pam.services.sshd.makeHomeDir = true;
