@@ -91,7 +91,6 @@
     bind.passwordFile = "/root/binddn.passwd";
     daemon = {
       enable = true;
-      rootpwmoddn = "CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs";
       extraConfig = ''
         bindpw SECRET_LOL
         rootpw 
