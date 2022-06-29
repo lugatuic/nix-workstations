@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   imports =
@@ -119,6 +119,7 @@
   #  wget
     firefox
     kate
+    pam_ldap
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
