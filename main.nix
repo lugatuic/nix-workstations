@@ -93,18 +93,6 @@
       enable = true;
       extraConfig = ''
         bindpw SECRET_LOL
-        rootpw 
-        pagesize 1000
-        referrals off
-        filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-        map    passwd uid              sAMAccountName
-        map    passwd homeDirectory    unixHomeDirectory
-        map    passwd gecos            displayName
-        filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-        map    shadow uid              sAMAccountName
-        map    shadow shadowLastChange pwdLastSet
-        filter group  (objectClass=group)
-        map    group  uniqueMember     member
       '';
     };
     
