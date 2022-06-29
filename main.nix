@@ -82,7 +82,7 @@
   };
 
   users.ldap = {
-    enable = true;
+    enable = false;
     base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs";
     loginPam = true;
