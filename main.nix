@@ -85,23 +85,28 @@
     enable = true;
     base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs";
+    loginPam = true;
+    nsswitch = true;
     bind.distinguishedName = "nslcduser@acm.cs";
     bind.passwordFile = "/root/binddn.passwd";
+    daemon = {
+      enable = true;
+    };
     
   };
   security.pam.services.sshd = {
     makeHomeDir = true;
 
     # see https://stackoverflow.com/a/47041843 for why this is required
-    text = lib.mkDefault (
-      lib.mkBefore ''
-            auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-            password sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-            session optional ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-            account sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+    # text = lib.mkDefault (
+    #   lib.mkBefore ''
+    #         auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+    #         password sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+    #         session optional ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+    #         account sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
             
-        ''
-    );
+    #     ''
+    # );
   };
   environment.etc.allowed_groups = {
     text = "ACMLanAdmins";
