@@ -91,7 +91,24 @@
     bind.passwordFile = "/root/binddn.passwd";
     
   };
+  security.pam.services.sshd = {
+    makeHomeDir = true;
 
+    # see https://stackoverflow.com/a/47041843 for why this is required
+    text = lib.mkDefault (
+      lib.mkBefore ''
+            auth required pam_listfile.so \
+            item=group sense=allow onerr=fail file=/etc/allowed_groups
+        ''
+    );
+  };
+  environment.etc.allowed_groups = {
+    text = "ACMLanAdmins";
+    mode = "0444";
+  };
+  systemd.tmpfiles.rules = [
+    "L /bin/bash - - - - /run/current-system/sw/bin/bash"
+  ];
   security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
