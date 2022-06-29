@@ -93,6 +93,7 @@
       enable = true;
       extraConfig = ''
         bindpw SECRET_LOL
+        LMAO WTF ????
       '';
     };
     
