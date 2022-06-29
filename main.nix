@@ -81,14 +81,42 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  # users.ldap = {
-  #   enable = true;
-  #   base = "dc=acm,dc=cs";
-  #   server = "ldap://ad.acm.cs";
-  #   loginPam = true;
-  #   bind.distinguishedName = "nslcduser@acm.cs";
-  #   bind.passwordFile = "/root/bind.pass";
-  # };
+  users.ldap = {
+    enable = true;
+    base = "dc=acm,dc=cs";
+    server = "ldap://ad.acm.cs";
+    loginPam = true;
+    daemon = {
+      enable = true;
+      extraConfig = ''
+       uid nslcd
+       gid nslcd
+       uri ldap://ad.acm.cs
+       ldap_version 3
+       base dc=acm,dc=cs
+       binddn nslcduser@acm.cs
+       bindpw SECRET_LOL
+       rootpwmoddn CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs
+       rootpwmodpw SECRET_LOL
+       tls_reqcert never
+
+       base        group    ou=ACMGroups,dc=acm,dc=cs
+       base        passwd   ou=ACMUsers,dc=acm,dc=cs
+       base        shadow   ou=ACMUsers,dc=acm,dc=cs
+       pagesize 1000
+       referrals off
+       filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
+       map    passwd uid              sAMAccountName
+       map    passwd homeDirectory    unixHomeDirectory
+       map    passwd gecos            displayName
+       filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
+       map    shadow uid              sAMAccountName
+       map    shadow shadowLastChange pwdLastSet
+       filter group  (objectClass=group)
+       map    group  uniqueMember     member
+      '';
+    };
+  };
 
   security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
@@ -142,34 +170,34 @@
     };
   } ) ];
 
-  services.timesyncd = {
-    enable = true;
-    servers = ["dc1.acm.cs" "dc2.acm.cs"];
-  };
-  services.samba = {
-    enable = true;
-    enableWinbindd = true;
-    securityType = "ADS";
-    extraConfig = ''
-                      workgroup = ACM
-                      realm = acm.cs
-                      idmap config * : backend = autorid
-                      idmap config * : range = 10000-9999999
-                      username map = /etc/smb.map
+  # services.timesyncd = {
+  #   enable = true;
+  #   servers = ["dc1.acm.cs" "dc2.acm.cs"];
+  # };
+  # services.samba = {
+  #   enable = true;
+  #   enableWinbindd = true;
+  #   securityType = "ADS";
+  #   extraConfig = ''
+  #                     workgroup = ACM
+  #                     realm = acm.cs
+  #                     idmap config * : backend = autorid
+  #                     idmap config * : range = 10000-9999999
+  #                     username map = /etc/smb.map
 
-    '';
-  };
-  services.samba-wsdd = {
-    enable = true;
-    domain = "acm.cs";
-    discovery = true;
-  };
-  krb5.libdefaults = {
-    default_realm = "acm.cs";
-    dns_lookup_realm = false;
-    dns_lookup_kdc = true;
-    clockskew = "3000";
-  };
+  #   '';
+  # };
+  # services.samba-wsdd = {
+  #   enable = true;
+  #   domain = "acm.cs";
+  #   discovery = true;
+  # };
+  # krb5.libdefaults = {
+  #   default_realm = "acm.cs";
+  #   dns_lookup_realm = false;
+  #   dns_lookup_kdc = true;
+  #   clockskew = "3000";
+  # };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
