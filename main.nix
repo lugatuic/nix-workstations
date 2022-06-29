@@ -85,8 +85,6 @@
     enable = true;
     base = "dc=acm,dc=cs";
     server = "ldap://ad.acm.cs";
-    loginPam = true;
-    nsswitch = true;
     bind.distinguishedName = "nslcduser@acm.cs";
     bind.passwordFile = "/root/binddn.passwd";
     
