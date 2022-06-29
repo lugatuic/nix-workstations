@@ -109,7 +109,6 @@
   systemd.tmpfiles.rules = [
     "L /bin/bash - - - - /run/current-system/sw/bin/bash"
   ];
-  security.pam.services.sshd.makeHomeDir = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
