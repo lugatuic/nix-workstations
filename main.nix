@@ -168,6 +168,7 @@
     default_realm = "acm.cs";
     dns_lookup_realm = false;
     dns_lookup_kdc = true;
+    clockskew = "3000";
   };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
