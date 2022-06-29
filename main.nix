@@ -99,9 +99,6 @@
       lib.mkBefore ''
             auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so
             account sufficient pam_permit.so
-            
-            auth required pam_listfile.so \
-            item=group sense=allow onerr=fail file=/etc/allowed_groups
         ''
     );
   };
