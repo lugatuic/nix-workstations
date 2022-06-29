@@ -95,7 +95,7 @@
     # see https://stackoverflow.com/a/47041843 for why this is required
     text = lib.mkDefault (
       lib.mkBefore ''
-            auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so
+            auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
             account sufficient pam_permit.so
         ''
     );
