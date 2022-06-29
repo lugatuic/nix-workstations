@@ -91,8 +91,22 @@
     bind.passwordFile = "/root/binddn.passwd";
     daemon = {
       enable = true;
-      timeLimit = 300;
-      extraConfig = "bindpw SECRET_LOL";
+      rootpwmoddn = "CN=ACM PWAdmin,OU=ACMUsers,DC=acm,DC=cs";
+      rootpwmodpwFile = "/root/rootpw.passwd"
+      extraConfig = ''
+        bindpw SECRET_LOL
+        pagesize 1000
+        referrals off
+        filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
+        map    passwd uid              sAMAccountName
+        map    passwd homeDirectory    unixHomeDirectory
+        map    passwd gecos            displayName
+        filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
+        map    shadow uid              sAMAccountName
+        map    shadow shadowLastChange pwdLastSet
+        filter group  (objectClass=group)
+        map    group  uniqueMember     member
+      ''
     };
     
   };
