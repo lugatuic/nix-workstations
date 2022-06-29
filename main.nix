@@ -89,8 +89,6 @@
     daemon = {
       enable = true;
       extraConfig = ''
-       uid nslcd
-       gid nslcd
        uri ldap://ad.acm.cs
        ldap_version 3
        base dc=acm,dc=cs
