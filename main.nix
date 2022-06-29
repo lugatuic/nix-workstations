@@ -96,7 +96,10 @@
     text = lib.mkDefault (
       lib.mkBefore ''
             auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-            account sufficient pam_permit.so
+            password sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+            session optional ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+            account sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+            
         ''
     );
   };
