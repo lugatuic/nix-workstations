@@ -163,12 +163,17 @@
     enableWinbindd = true;
     securityType = "ADS";
     extraConfig = ''
-                      workgroup = ACM
-                      realm = acm.cs
-                      idmap config * : backend = autorid
-                      idmap config * : range = 10000-9999999
-                      username map = /etc/smb.map
-
+            workgroup = ACM
+            realm = acm.cs
+            idmap config * : backend = autorid
+            idmap config * : range = 10000-9999999
+            username map = /etc/smb.map
+            password server = ad.acm.cs
+            wins server = ad.acm.cs
+            wins proxy = no
+            inherit acls = Yes
+            map acl inherit = Yes
+            acl group control = yes
     '';
   };
   services.samba-wsdd = {
