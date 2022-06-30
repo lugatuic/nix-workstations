@@ -88,7 +88,7 @@ in {
         server = "ldap://ad.acm.cs";
         loginPam = true;
         nsswitch = true;
-        bind.distinguishedName = "nslcduser@acm.cs";
+        bind.distinguishedName = "CN=nslcd service user,OU=ServiceUsers,DC=acm,DC=cs";
         bind.passwordFile = "/root/binddn.passwd";
         daemon = {
         enable = true;
