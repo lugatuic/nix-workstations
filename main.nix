@@ -93,7 +93,11 @@
       enable = true;
       extraConfig = ''
         bindpw SECRET_LOL
-        rootpw 
+        base group ou=ACMGroups,dc=acm,dc=cs
+        base passwd ou=ACMUsers,dc=acm,dc=cs
+        base shadow ou=ACMUsers,dc=acm,dc=cs
+        tls_reqcert never
+        
         pagesize 1000
         referrals off
         filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
