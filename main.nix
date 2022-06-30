@@ -81,36 +81,37 @@
     extraGroups = [ "networkmanager" "wheel" ];
   };
 
-  users.ldap = {
-    enable = true;
-    base = "dc=acm,dc=cs";
-    server = "ldap://ad.acm.cs";
-    loginPam = true;
-    nsswitch = true;
-    bind.distinguishedName = "nslcduser@acm.cs";
-    bind.passwordFile = "/root/binddn.passwd";
-    daemon = {
-      enable = true;
-      extraConfig = ''
-        bindpw SECRET_LOL
-        base group ou=ACMGroups,dc=acm,dc=cs
-        base passwd ou=ACMUsers,dc=acm,dc=cs
-        base shadow ou=ACMUsers,dc=acm,dc=cs
-        tls_reqcert never
-        
-        pagesize 1000
-        referrals off
-        filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-        map    passwd uid              sAMAccountName
-        map    passwd homeDirectory    unixHomeDirectory
-        map    passwd gecos            displayName
-        filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*))
-        map    shadow uid              sAMAccountName
-        map    shadow shadowLastChange pwdLastSet
-        filter group  (objectClass=group)
-      '';
+  let
+    my_obj_sid = "S-1-5-21-1139666126-4292851174-2664146837-2302";
+  in {
+    users.ldap = {
+        enable = true;
+        base = "dc=acm,dc=cs";
+        server = "ldap://ad.acm.cs";
+        loginPam = true;
+        nsswitch = true;
+        bind.distinguishedName = "nslcduser@acm.cs";
+        bind.passwordFile = "/root/binddn.passwd";
+        daemon = {
+        enable = true;
+        extraConfig = ''
+            bindpw SECRET_LOL
+            pagesize 1000
+            referrals off
+            idle_timelimit 800
+            filter passwd (&(objectClass=user)(objectClass=person)(!(objectClass=computer)))
+            map    passwd uid           cn
+            map    passwd uidNumber     objectSid:${my_obj_sid}
+            map    passwd gidNumber     objectSid:${my_obj_sid}
+            map    passwd homeDirectory "/home/$cn"
+            map    passwd gecos         displayName
+            map    passwd loginShell    "/run/current-system/sw/bin/bash"
+            filter group (|(objectClass=group)(objectClass=person))
+            map    group gidNumber      objectSid:${my_obj_sid}
+        '';
+        };
+
     };
-    
   };
   security.pam.services.sshd = {
     makeHomeDir = true;
