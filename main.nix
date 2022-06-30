@@ -94,6 +94,7 @@ in {
         enable = true;
         extraConfig = ''
                 bindpw SECRET_LOL
+                tls_reqcert never
                 pagesize 1000
                 referrals off
                 idle_timelimit 800
