@@ -151,6 +151,7 @@
       enableLDAP = true;
       enableMDNS = true;
       enableDomainController = true;
+      enablePam = true;
     };
   } ) ];
 
@@ -182,6 +183,12 @@
     enable = true;
     domain = "acm.cs";
     discovery = true;
+  };
+  system.nssDatabases = {
+    shadow = ["winbind"];
+    passwd = ["winbind"];
+    group = ["winbind"];
+    hosts = ["wins"];
   };
   krb5 = {
     enable = true;
