@@ -207,7 +207,7 @@
   krb5 = {
     enable = true;
     libdefaults = {
-        default_realm = "ad.acm.cs";
+        default_realm = "ACM.CS";
         dns_lookup_realm = false;
         dns_lookup_kdc = true;
         clockskew = "3000";
@@ -223,13 +223,13 @@
 	  #     debug 			= false;
 	  #   };
     # };
-    # realms = {
-    #   "ACM.CS" = {
-		#     dc 	=	"ad.ACM.CS";
-    #     admin_server =  "ad.ACM.CS";
-		#     default_domain = "ACM.CS";
-	  #   };
-    # };
+    realms = {
+      "ACM.CS" = {
+		    dc 	=	"ad.ACM.CS";
+        admin_server =  "ad.ACM.CS";
+		    default_domain = "ACM.CS";
+	    };
+    };
     # domain_realm = {
     #     ".kerberos.server" = "ACM.CS";
     #     ".example.com" = "ACM.CS";
