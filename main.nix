@@ -168,7 +168,7 @@
             log file = /var/log/samba/%m.log
             log level = 1
             workgroup = ACM
-            realm = ad.acm.cs
+            realm = acm.cs
             winbind nss info = rfc2307
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
