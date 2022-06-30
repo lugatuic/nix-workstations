@@ -104,7 +104,6 @@
         map    shadow uid              sAMAccountName
         map    shadow shadowLastChange pwdLastSet
         filter group  (objectClass=group)
-        map    group  uniqueMember     member
       '';
     };
     
