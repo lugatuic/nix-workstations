@@ -161,6 +161,7 @@
   services.samba = {
     enable = true;
     enableWinbindd = true;
+    nsswins = true;
     securityType = "ADS";
     extraConfig = ''
             workgroup = ACM
