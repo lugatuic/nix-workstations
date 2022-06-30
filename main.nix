@@ -208,9 +208,8 @@
     enable = true;
     libdefaults = {
         default_realm = "ACM.CS";
-        dns_lookup_realm = false;
+        dns_lookup_realm = true;
         dns_lookup_kdc = true;
-        clockskew = "3000";
     };
     # appdefaults = {
     #   pam = {
