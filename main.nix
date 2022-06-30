@@ -181,13 +181,40 @@
     domain = "acm.cs";
     discovery = true;
   };
-  krb5.libdefaults = {
-    default_realm = "acm.cs";
-    dns_lookup_realm = false;
-    dns_lookup_kdc = true;
-    clockskew = "3000";
+  krb5 = {
+    enable = true;
+    libdefaults = {
+        default_realm = "acm.cs";
+        dns_lookup_realm = true;
+        dns_lookup_kdc = true;
+        clockskew = "3000";
+    };
+    appdefaults = {
+      pam = {
+	      ticket_lifetime 	= "1d";
+	      renew_lifetime 		= "1d";
+	      forwardable 		= true;
+	      proxiable 		= false;
+	      retain_after_close 	= false;
+	      minimum_uid 		= 0;
+	      debug 			= false;
+	    }
+    };
+    realms = {
+      ACM.CS = {
+		    kdc 	=	"ad.ACM.CS"
+        admin_server =  "ad.ACM.CS";
+		    default_domain = "ACM.CS";
+	    };
+    };
+    domain_realm = {
+        .kerberos.server = "ACM.CS";
+        .example.com = "ACM.CS";
+        example.com = "ACM.CS";
+        example	= "ACM.CS";
+
+    };
   };
-  krb5.enable = true;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
