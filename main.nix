@@ -4,10 +4,9 @@
 
 { lib, config, pkgs, ... }:
 
-  let
-    my_obj_sid = "S-1-5-21-1139666126-4292851174-2664146837-2302";
-  in {
-    {
+let
+  my_obj_sid = "S-1-5-21-1139666126-4292851174-2664146837-2302";
+in {
     imports =
         [ # Include the results of the hardware scan.
         ./hardware-configuration.nix
@@ -226,6 +225,5 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     system.stateVersion = "22.05"; # Did you read the comment?
 
-    }
 
-  };
+};
