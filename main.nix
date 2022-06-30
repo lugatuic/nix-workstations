@@ -174,6 +174,7 @@
             inherit acls = Yes
             map acl inherit = Yes
             acl group control = yes
+            client ldap sasl wrapping = plain
     '';
   };
   services.samba-wsdd = {
@@ -198,20 +199,20 @@
 	      retain_after_close 	= false;
 	      minimum_uid 		= 0;
 	      debug 			= false;
-	    }
+	    };
     };
     realms = {
-      ACM.CS = {
-		    kdc 	=	"ad.ACM.CS"
+      "ACM.CS" = {
+		    dc 	=	"ad.ACM.CS";
         admin_server =  "ad.ACM.CS";
 		    default_domain = "ACM.CS";
 	    };
     };
     domain_realm = {
-        .kerberos.server = "ACM.CS";
-        .example.com = "ACM.CS";
-        example.com = "ACM.CS";
-        example	= "ACM.CS";
+        ".kerberos.server" = "ACM.CS";
+        ".example.com" = "ACM.CS";
+        "example.com" = "ACM.CS";
+        "example"	= "ACM.CS";
 
     };
   };
