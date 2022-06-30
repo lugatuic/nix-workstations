@@ -165,10 +165,21 @@
     nsswins = true;
     securityType = "ADS";
     extraConfig = ''
+            log file = /var/log/samba/%m.log
+            log level = 1
             workgroup = ACM
-            realm = acm.cs
-            idmap config * : backend = autorid
-            idmap config * : range = 10000-9999999
+            realm = ad.acm.cs
+            winbind nss info = rfc2307
+            idmap config * : backend = tdb
+            idmap config * : range = 3000-7999
+            idmap config ACM:backend = ad
+            idmap config ACM:schema_mode = rfc2307
+            idmap config ACM:range = 10000-999999
+            idmap config ACM:unix_nss_info = yes
+            template shell = /run/current-system/sw/bin/bash
+            template homedir = /home/%U
+            idmap config ACM:unix_primary_group = yes
+            vfs objects = acl_xattr
             username map = /etc/smb.map
             password server = ad.acm.cs
             wins server = ad.acm.cs
@@ -178,6 +189,9 @@
             acl group control = yes
             client ldap sasl wrapping = plain
     '';
+  };
+  environment.etc."user.map" = {
+    text = "!root = ACM\sohamg2";
   };
   services.samba-wsdd = {
     enable = true;
