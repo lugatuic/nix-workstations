@@ -187,6 +187,7 @@
     dns_lookup_kdc = true;
     clockskew = "3000";
   };
+  krb5.enable = true;
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
