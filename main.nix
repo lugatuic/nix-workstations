@@ -162,7 +162,7 @@
             log level = 1
             workgroup = ACMUIC
             realm = acmuic.org
-            idmap config * : backend = tdb
+            idmap config * : backend = rid
             idmap config * : range = 10000-20000
 
             winbind use default domain = Yes
