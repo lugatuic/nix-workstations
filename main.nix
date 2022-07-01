@@ -194,7 +194,7 @@
     discovery = true;
   };
   system.nssDatabases = {
-    shadow = ["winbind"];
+    # shadow = ["winbind"]; # Apparently messes with samba
     passwd = ["winbind"];
     group = ["winbind"];
     hosts = ["wins"];
