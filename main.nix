@@ -86,10 +86,9 @@
 
     text = lib.mkDefault (
       lib.mkBefore ''
-            auth sufficient ${pkgs.samba}/lib/security/pam_winbind.so
-            password sufficient ${pkgs.samba}/lib/security/pam_winbind.so
-            session optional ${pkgs.samba}/lib/security/pam_winbind.so
-            account sufficient ${pkgs.samba}/lib/security/pam_winbind.so
+            auth sufficient ${pkgs.samba}/lib/security/pam_winbind.so use_first_pass
+            password sufficient ${pkgs.samba}/lib/security/pam_winbind.so use_authtok
+            account [default=bad success=ok user_unknown=ignore] ${pkgs.samba}/lib/security/pam_winbind.so
             
         ''
     );
@@ -199,7 +198,6 @@
     # shadow = ["winbind"]; # Apparently messes with samba
     passwd = ["winbind"];
     group = ["winbind"];
-    hosts = ["wins"];
   };
   krb5 = {
     enable = true;
