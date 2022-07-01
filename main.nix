@@ -84,16 +84,16 @@
   security.pam.services.sshd = {
     makeHomeDir = true;
 
-    # see https://stackoverflow.com/a/47041843 for why this is required
-    # text = lib.mkDefault (
-    #   lib.mkBefore ''
-    #         auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-    #         password sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-    #         session optional ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-    #         account sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
+    see https://stackoverflow.com/a/47041843 for why this is required
+    text = lib.mkDefault (
+      lib.mkBefore ''
+            auth sufficient ${pkgs.samba}/lib/security/pam_winbind.so
+            password sufficient ${pkgs.samba}/lib/security/pam_winbind.so
+            session optional ${pkgs.samba}/lib/security/pam_winbind.so
+            account sufficient ${pkgs.samba}/lib/security/pam_winbind.so
             
-    #     ''
-    # );
+        ''
+    );
   };
   environment.etc.allowed_groups = {
     text = "ACMLanAdmins";
@@ -240,8 +240,6 @@
     # GSSAPI options
     GSSAPIAuthentication yes
     GSSAPICleanupCredentials yes
-    GSSAPIKeyExchange yes                # If your version supports this
-    GSSAPIStoreCredentialsOnRekey yes    # If your version supports this
     '';
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
