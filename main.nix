@@ -162,19 +162,21 @@
             log level = 1
             workgroup = ACMUIC
             realm = acmuic.org
-            winbind nss info = template
-            winbind use default domain = yes
-            winbind enum users = yes
-            winbind enum groups = yes
-            winbind use default domain = yes
-            kerberos method = secrets and keytab
+            idmap config * : backend = tdb
+            idmap config * : range = 10000-20000
+
+            winbind use default domain = Yes
+            winbind enum users = Yes
+            winbind enum groups = Yes
+            winbind nested groups = Yes
+            winbind separator = +
             winbind refresh tickets = yes
-           	idmap config ACMUIC : backend  = nss
-            idmap config ACMUIC : range = 1000-999999
-            idmap config ACMUIC:unix_nss_info = yes
+            winbind offline logon = yes
+            winbind cache time = 300
+
+            kerberos method = secrets and keytab
             template shell = /run/current-system/sw/bin/bash
             template homedir = /home/%U
-            idmap config ACMUIC:unix_primary_group = yes
             vfs objects = acl_xattr
             username map = /etc/smb.map
             password server = activedirectory.acmuic.org
