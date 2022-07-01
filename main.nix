@@ -162,7 +162,10 @@
             log level = 1
             workgroup = ACMUIC
             realm = acmuic.org
-            winbind nss info = rfc2307
+            winbind nss info = template
+            winbind use default domain = yes
+            winbind enum users = yes
+            winbind enum groups = yes
             winbind use default domain = yes
             kerberos method = secrets and keytab
             winbind refresh tickets = yes
@@ -242,6 +245,7 @@
   users.ldap = {
     enable = true;
     server = "ldap://activedirectory.acmuic.org";
+    base = "dc=acmuic,dc=org";
     daemon.enable = true;
     daemon.extraConfig = ''
                        uri ldap://activedirectory.acmuic.org
