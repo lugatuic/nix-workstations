@@ -238,6 +238,35 @@
     GSSAPIAuthentication yes
     GSSAPICleanupCredentials yes
     '';
+
+  users.ldap = {
+    enable = true;
+    daemon.enable = true;
+    daemon.extraConfig = ''
+                       uri ldap://activedirectory.acmuic.org
+                       ldap_version 3
+                       base dc=acmuic,dc=org
+                       binddn nslcduser@acmuic.org
+                       bindpw SECRET
+                       rootpwmoddn CN=ACM PWAdmin,OU=ACMUsers,DC=acmuic,DC=org
+                       rootpwmodpw SECRET
+                       base   group  ou=ACMGroups,dc=acmuic,dc=org
+                       base   passwd ou=ACMUsers,dc=acmuic,dc=org
+                       base   shadow ou=ACMUsers,dc=acmuic,dc=org
+                       pagesize 1000
+                       referrals off
+                       idle_timelimit 800
+                       filter passwd (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))
+                       map    passwd uid              sAMAccountName
+                       map    passwd homeDirectory    unixHomeDirectory
+                       map    passwd gecos            displayName
+                       filter shadow (&(objectClass=user)(!(objectClass=computer))(uidNumber=*)(unixHomeDirectory=*)(!(UserAccountControl:1.2.840.113556.1.4.803:=2)))
+                       map    shadow uid              sAMAccountName
+                       map    shadow shadowLastChange pwdLastSet
+                       filter group  (objectClass=group)
+        
+    '';
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
