@@ -165,12 +165,15 @@
             workgroup = ACMUIC
             realm = acmuic.org
             winbind nss info = rfc2307
+            winbind use default domain = yes
+            kerberos method = secrets and keytab
+            winbind refresh tickets = yes
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
-            idmap config ACM:backend = ad
-            idmap config ACM:schema_mode = rfc2307
-            idmap config ACM:range = 10000-999999
-            idmap config ACM:unix_nss_info = yes
+            idmap config ACMUIC:backend = ad
+            idmap config ACMUIC:schema_mode = rfc2307
+            idmap config ACMUIC:range = 10000-999999
+            idmap config ACMUIC:unix_nss_info = yes
             template shell = /run/current-system/sw/bin/bash
             template homedir = /home/%U
             idmap config ACM:unix_primary_group = yes
@@ -205,6 +208,7 @@
         default_realm = "ACMUIC.ORG";
         dns_lookup_realm = true;
         dns_lookup_kdc = true;
+        rdns = false;
     };
     # appdefaults = {
     #   pam = {
@@ -232,6 +236,13 @@
 
     # };
   };
+  services.openssh.extraConfig = ''
+    # GSSAPI options
+    GSSAPIAuthentication yes
+    GSSAPICleanupCredentials yes
+    GSSAPIKeyExchange yes                # If your version supports this
+    GSSAPIStoreCredentialsOnRekey yes    # If your version supports this
+    '';
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
