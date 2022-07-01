@@ -84,7 +84,6 @@
   security.pam.services.sshd = {
     makeHomeDir = true;
 
-    see https://stackoverflow.com/a/47041843 for why this is required
     text = lib.mkDefault (
       lib.mkBefore ''
             auth sufficient ${pkgs.samba}/lib/security/pam_winbind.so
@@ -169,14 +168,14 @@
             kerberos method = secrets and keytab
             winbind refresh tickets = yes
             idmap config * : backend = tdb
-            idmap config * : range = 3000-7999
-            idmap config ACMUIC:backend = ad
-            idmap config ACMUIC:schema_mode = rfc2307
-            idmap config ACMUIC:range = 10000-999999
+            idmap config * : range = 1000000-1999999
+
+           	idmap config ACMUIC : backend  = nss
+            idmap config ACMUIC : range = 1000-999999
             idmap config ACMUIC:unix_nss_info = yes
             template shell = /run/current-system/sw/bin/bash
             template homedir = /home/%U
-            idmap config ACM:unix_primary_group = yes
+            idmap config ACMUIC:unix_primary_group = yes
             vfs objects = acl_xattr
             username map = /etc/smb.map
             password server = activedirectory.acmuic.org
