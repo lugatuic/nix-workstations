@@ -241,6 +241,7 @@
 
   users.ldap = {
     enable = true;
+    server = "ldap://activedirectory.acmuic.org";
     daemon.enable = true;
     daemon.extraConfig = ''
                        uri ldap://activedirectory.acmuic.org
