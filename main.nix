@@ -169,9 +169,6 @@
             winbind use default domain = yes
             kerberos method = secrets and keytab
             winbind refresh tickets = yes
-            idmap config * : backend = tdb
-            idmap config * : range = 1000000-1999999
-
            	idmap config ACMUIC : backend  = nss
             idmap config ACMUIC : range = 1000-999999
             idmap config ACMUIC:unix_nss_info = yes
