@@ -139,7 +139,7 @@
   #       nameserver 172.29.0.16
   #     '';
   #   };
-  };
+  # };
 
   networking.hosts = {
     "127.0.0.1" = ["evaa.acmuic.org" "evaa"];
