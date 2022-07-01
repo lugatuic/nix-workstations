@@ -132,17 +132,17 @@
   services.avahi.enable = false;
   # Disable resolveconf, we're using Samba internal DNS backend
   systemd.services.resolvconf.enable = false;
-  environment.etc = {
-    resolvconf = {
-      text = ''
-        search ad.acm.cs
-        nameserver 172.29.0.16
-      '';
-    };
+  # environment.etc = {
+  #   resolvconf = {
+  #     text = ''
+  #       search ad.acm.cs
+  #       nameserver 172.29.0.16
+  #     '';
+  #   };
   };
 
   networking.hosts = {
-    "127.0.0.1" = ["evaa.acm.cs" "evaa"];
+    "127.0.0.1" = ["evaa.acmuic.org" "evaa"];
   };
 
   # Rebuild Samba with LDAP, MDNS and Domain Controller support
@@ -154,11 +154,6 @@
       enablePam = true;
     };
   } ) ];
-
-  services.timesyncd = {
-    enable = true;
-    servers = ["dc1.acm.cs" "dc2.acm.cs"];
-  };
   services.samba = {
     enable = true;
     enableWinbindd = true;
@@ -167,8 +162,8 @@
     extraConfig = ''
             log file = /var/log/samba/%m.log
             log level = 1
-            workgroup = ACM
-            realm = acm.cs
+            workgroup = ACMUIC
+            realm = activedirectory.acmuic.org
             winbind nss info = rfc2307
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
@@ -181,8 +176,8 @@
             idmap config ACM:unix_primary_group = yes
             vfs objects = acl_xattr
             username map = /etc/smb.map
-            password server = ad.acm.cs
-            wins server = ad.acm.cs
+            password server = activedirectory.acmuic.org
+            wins server = activedirectory.acmuic.org
             wins proxy = no
             inherit acls = Yes
             map acl inherit = Yes
@@ -191,11 +186,11 @@
     '';
   };
   environment.etc."user.map" = {
-    text = "!root = ACM\sohamg2";
+    text = "!root = ACMUIC\sgumas2";
   };
   services.samba-wsdd = {
     enable = true;
-    domain = "acm.cs";
+    domain = "acmuic.org";
     discovery = true;
   };
   system.nssDatabases = {
@@ -207,7 +202,7 @@
   krb5 = {
     enable = true;
     libdefaults = {
-        default_realm = "ACM.CS";
+        default_realm = "ACMUIC.ORG";
         dns_lookup_realm = true;
         dns_lookup_kdc = true;
     };
@@ -223,10 +218,10 @@
 	  #   };
     # };
     realms = {
-      "ACM.CS" = {
-		    dc 	=	"ad.ACM.CS";
-        admin_server =  "ad.ACM.CS";
-		    default_domain = "ACM.CS";
+      "ACMUIC.ORF" = {
+		    dc 	=	"activedirectory.ACMUIC.ORG";
+        admin_server =  "activedirectory.ACMUIC.ORG";
+		    default_domain = "ACMUIC.ORG";
 	    };
     };
     # domain_realm = {
