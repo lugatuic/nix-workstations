@@ -162,9 +162,12 @@
             log level = 1
             workgroup = ACMUIC
             realm = acmuic.org
-            idmap config * : backend = autorid
-            idmap config * : range = 10000-20000
-
+            idmap config * : backend = tdb
+            idmap config * : range = 3000-7999
+            idmap config ACMUIC : backend = ad
+            idmap config ACMUIC : range = 10000-999999
+            idmap config ACMUIC : unix_nss_info = no
+            
             winbind use default domain = Yes
             winbind enum users = Yes
             winbind enum groups = Yes
