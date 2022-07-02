@@ -164,7 +164,8 @@
             realm = acmuic.org
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
-            
+            idmap config ACMUIC : backend = rid
+            idmap config ACMUIC : range = 10000-999999 
             winbind use default domain = Yes
             winbind nss info = rfc2307
             winbind enum users = Yes
