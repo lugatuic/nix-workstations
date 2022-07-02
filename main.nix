@@ -164,9 +164,11 @@
             realm = acmuic.org
             idmap config * : backend = tdb
             idmap config * : range = 3000-7999
-            idmap config ACMUIC : backend = ad
+            idmap config ACMUIC : backend = ldap
             idmap config ACMUIC : range = 10000-999999
-            idmap config ACMUIC : unix_nss_info = no
+            idmap config ACMUIC : ldap_base_dn = OU=ACMUsers,DC=acmuic,DC=org
+            idmap config ACMUIC : ldap_user_dn = nslcduser@acmuic.org
+            idmap config ACMUIC : ldap_url = ldap://activedirectory.acmuic.org
             
             winbind use default domain = Yes
             winbind enum users = Yes
