@@ -27,10 +27,6 @@ in {
     networking.hostName = "EVAA"; # Define your hostname.
     # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-    # Configure network proxy if necessary
-    # networking.proxy.default = "http://user:password@proxy:port/";
-    # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
     # Enable networking
     networking.networkmanager.enable = true;
 
@@ -74,7 +70,7 @@ in {
     };
 
     # Enable touchpad support (enabled default in most desktopManager).
-    # services.xserver.libinput.enable = true;
+    services.xserver.libinput.enable = true;
 
     # Define a user account. Don't forget to set a password with ‘passwd’.
     users.users.acm = {
@@ -82,56 +78,6 @@ in {
         description = "ACM";
         extraGroups = [ "networkmanager" "wheel" ];
     };
-    users.ldap = {
-        enable = true;
-        base = "dc=acm,dc=cs";
-        server = "ldap://ad.acm.cs";
-        loginPam = true;
-        nsswitch = true;
-        bind.distinguishedName = "CN=nslcd service user,OU=ServiceUsers,DC=acm,DC=cs";
-        bind.passwordFile = "/root/binddn.passwd";
-        daemon = {
-        enable = true;
-        extraConfig = ''
-                bindpw SECRET_LOL
-                tls_reqcert never
-                pagesize 1000
-                referrals off
-                idle_timelimit 800
-                filter passwd (&(objectClass=user)(objectClass=person)(!(objectClass=computer)))
-                map    passwd uid           cn
-                map    passwd uidNumber     objectSid:${my_obj_sid}
-                map    passwd gidNumber     objectSid:${my_obj_sid}
-                map    passwd homeDirectory "/home/$cn"
-                map    passwd gecos         displayName
-                map    passwd loginShell    "/run/current-system/sw/bin/bash"
-                filter group (|(objectClass=group)(objectClass=person))
-                map    group gidNumber      objectSid:${my_obj_sid}
-            '';
-        };
-
-    };
-    security.pam.services.sshd = {
-        makeHomeDir = true;
-
-        # see https://stackoverflow.com/a/47041843 for why this is required
-        # text = lib.mkDefault (
-        #   lib.mkBefore ''
-        #         auth sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-        #         password sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-        #         session optional ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-        #         account sufficient ${pkgs.pam_ldap}/lib/security/pam_ldap.so config=/etc/ldap.conf
-
-        #     ''
-        # );
-    };
-    environment.etc.allowed_groups = {
-        text = "ACMLanAdmins";
-        mode = "0444";
-    };
-    systemd.tmpfiles.rules = [
-        "L /bin/bash - - - - /run/current-system/sw/bin/bash"
-    ];
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
 
@@ -148,10 +94,10 @@ in {
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
     # programs.mtr.enable = true;
-    # programs.gnupg.agent = {
-    #   enable = true;
+    programs.gnupg.agent = {
+      enable = true;
     #   enableSSHSupport = true;
-    # };
+    };
 
     # List services that you want to enable:
 
@@ -160,58 +106,52 @@ in {
     services.openssh.permitRootLogin = "yes";
 
     services.avahi.enable = false;
-    # Disable resolveconf, we're using Samba internal DNS backend
-    systemd.services.resolvconf.enable = false;
-    environment.etc = {
-        resolvconf = {
-        text = ''
-            search ad.acm.cs
-            nameserver 172.29.0.16
-        '';
-        };
+
+    #####################################################
+    # SSSD SETUP FOR AD LOGINS
+    #####################################################
+
+    services.sssd = {
+      enable = true;
+      config = ''
+             [sssd]
+             config_file_version = 2
+             services = nss, pam, sudo, ssh
+             domains = LDAP
+
+             [pam]
+
+             [nss]
+             filter_groups = root
+             filter_users = root
+
+             [domain/LDAP]
+             enumerate = TRUE
+             cache_credentials = TRUE
+             id_provider = ad
+             ad_domain = acmuic.org
+             ad_server = activedirectory.acmuic.org
+             ldap_id_mapping = True
+             ldap_schema = ad
+             auth_provider = ad
+             access_provider = ad
+             chpass_provider = ad
+
+      '';
     };
 
-    networking.hosts = {
-        "127.0.0.1" = ["evaa.acm.cs" "evaa"];
+    services.nscd.enable = false;
+
+    services.nssDatabases = {
+      shadow = ["sss"];
+      services = ["sss"];
+      hosts = ["sss"];
+      groups = ["sss"];
     };
 
-    # Rebuild Samba with LDAP, MDNS and Domain Controller support
-    nixpkgs.overlays = [ (self: super: {
-        samba = super.samba.override {
-        enableLDAP = true;
-        enableMDNS = true;
-        enableDomainController = true;
-        };
-    } ) ];
 
-    # services.timesyncd = {
-    #   enable = true;
-    #   servers = ["dc1.acm.cs" "dc2.acm.cs"];
-    # };
-    # services.samba = {
-    #   enable = true;
-    #   enableWinbindd = true;
-    #   securityType = "ADS";
-    #   extraConfig = ''
-    #                     workgroup = ACM
-    #                     realm = acm.cs
-    #                     idmap config * : backend = autorid
-    #                     idmap config * : range = 10000-9999999
-    #                     username map = /etc/smb.map
 
-    #   '';
-    # };
-    # services.samba-wsdd = {
-    #   enable = true;
-    #   domain = "acm.cs";
-    #   discovery = true;
-    # };
-    # krb5.libdefaults = {
-    #   default_realm = "acm.cs";
-    #   dns_lookup_realm = false;
-    #   dns_lookup_kdc = true;
-    #   clockskew = "3000";
-    # };
+    
     # Open ports in the firewall.
     # networking.firewall.allowedTCPPorts = [ ... ];
     # networking.firewall.allowedUDPPorts = [ ... ];
